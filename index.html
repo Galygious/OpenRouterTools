@@ -64,19 +64,29 @@
     <!-- Chat View -->
     <div id="chat-view" class="tab-content">
       <div id="model-selector">
-        <div class="model-row">
-          <select id="model-dropdown" aria-label="Select model">
+        <div class="model-hierarchy-selector">
+          <select id="creator-dropdown" aria-label="Select model creator">
+            <option value="">Select a creator...</option>
+          </select>
+          <select id="model-dropdown" aria-label="Select model" disabled>
             <option value="">Select a model...</option>
           </select>
-          <input
-            type="number"
-            id="max-price"
-            placeholder="Max price per 1M tokens ($)"
-            aria-label="Maximum price per million tokens"
-            step="0.01"
-            min="0"
-          />
+          <select id="version-dropdown" aria-label="Select version" disabled>
+            <option value="">Select a version...</option>
+          </select>
+          <select id="provider-dropdown" aria-label="Select provider" disabled>
+            <option value="">Select a provider...</option>
+          </select>
         </div>
+        
+        <div id="model-details">
+          <div id="pricing-info">
+            <span id="prompt-price">Prompt Price: -</span>
+            <span id="completion-price">Completion Price: -</span>
+          </div>
+          <div id="model-description"></div>
+        </div>
+
         <div id="provider-filters">
           <button data-sort="price" aria-label="Sort by price">Sort by Price</button>
           <button data-sort="latency" aria-label="Sort by latency">Sort by Latency</button>
