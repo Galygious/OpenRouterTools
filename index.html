@@ -5,110 +5,222 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>OpenRouter Dashboard</title>
-    <link rel="stylesheet" href="styles.min.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <link rel="preconnect" href="https://openrouter.ai" />
   </head>
 
-  <body>
-    <h1>OpenRouter Dashboard</h1>
-    
-    <!-- Auth Section -->
-    <div id="auth-section">
-      <input
-        type="password"
-        id="api-key"
-        placeholder="Enter OpenRouter API Key"
-        aria-label="API key input"
-      />
-      <button id="save-key" aria-label="Save API key">Save Key</button>
-    </div>
-
-    <!-- Tab Navigation -->
-    <div id="tab-navigation">
-      <button id="stats-tab" class="tab-button active" aria-pressed="true">Stats</button>
-      <button id="chat-tab" class="tab-button" aria-pressed="false">Chat</button>
-    </div>
-
-    <!-- Stats View -->
-    <div id="stats-view" class="tab-content active">
-      <div id="input-section">
+  <body class="bg-gray-50 min-h-screen p-6">
+    <div class="max-w-7xl mx-auto">
+      <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">OpenRouter Dashboard</h1>
+      
+      <!-- Auth Section -->
+      <form id="auth-section" class="flex justify-center gap-4 mb-8" onsubmit="return false;">
         <input
-          type="text"
-          id="model-input"
-          placeholder="Enter Model Name (e.g., deepseek/deepseek-chat)"
-          aria-label="Model name input"
+          type="password"
+          id="api-key"
+          placeholder="Enter OpenRouter API Key"
+          aria-label="API key input"
+          required
+          class="w-96 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         />
-        <button id="fetch-button" aria-label="Fetch stats">Fetch Stats</button>
-        <button id="fetch-all-button" aria-label="Fetch all stats">Fetch All Stats</button>
-        <ul id="suggestions" role="listbox"></ul>
-      </div>
-      <div id="error-message" role="alert"></div>
-      <div id="loading" role="status">Loading...</div>
-      <table id="stats-table">
-        <thead>
-          <tr>
-            <th scope="col">hf_slug</th>
-            <th scope="col">Provider</th>
-            <th scope="col">Context Length</th>
-            <th scope="col">Max Completion Tokens</th>
-            <th scope="col">Pricing Prompt ($)</th>
-            <th scope="col">Pricing Completion ($)</th>
-            <th scope="col">Avg Latency (s)</th>
-            <th scope="col">Throughput (t/s)</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
+        <button 
+          id="save-key" 
+          type="submit" 
+          aria-label="Save API key"
+          class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        >
+          Save Key
+        </button>
+      </form>
 
-    <!-- Chat View -->
-    <div id="chat-view" class="tab-content">
-      <div id="model-selector">
-        <div class="model-hierarchy-selector">
-          <select id="creator-dropdown" aria-label="Select model creator">
-            <option value="">Select a creator...</option>
-          </select>
-          <select id="model-dropdown" aria-label="Select model" disabled>
-            <option value="">Select a model...</option>
-          </select>
-          <select id="version-dropdown" aria-label="Select version" disabled>
-            <option value="">Select a version...</option>
-          </select>
-          <select id="provider-dropdown" aria-label="Select provider" disabled>
-            <option value="">Select a provider...</option>
-          </select>
+      <!-- Tab Navigation -->
+      <div id="tab-navigation" class="flex justify-center gap-4 mb-6">
+        <button 
+          id="stats-tab" 
+          class="tab-button active px-6 py-2 rounded-md transition-colors"
+          aria-pressed="true"
+        >
+          Stats
+        </button>
+        <button 
+          id="chat-tab" 
+          class="tab-button px-6 py-2 rounded-md transition-colors"
+          aria-pressed="false"
+        >
+          Chat
+        </button>
+      </div>
+
+      <!-- Stats View -->
+      <div id="stats-view" class="tab-content active bg-white rounded-lg shadow-sm p-6">
+        <div id="input-section" class="flex gap-4 mb-6">
+          <div class="flex-1 relative">
+            <input
+              type="text"
+              id="model-input"
+              placeholder="Search models (e.g., gpt-4, claude)"
+              aria-label="Model search input"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+            <ul id="suggestions" class="hidden absolute w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10"></ul>
+          </div>
+          <button 
+            id="fetch-button" 
+            aria-label="Fetch stats"
+            class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          >
+            Fetch Stats
+          </button>
+          <button 
+            id="fetch-all-button" 
+            aria-label="Fetch all stats"
+            class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          >
+            Fetch All Stats
+          </button>
+        </div>
+
+        <div 
+          id="error-message" 
+          role="alert"
+          class="hidden p-4 mb-4 text-red-700 bg-red-100 rounded-md"
+        ></div>
+
+        <div 
+          id="loading" 
+          role="status"
+          class="hidden text-center p-4 text-gray-600"
+        >
+          Loading...
+        </div>
+
+        <div class="overflow-x-auto">
+          <table id="stats-table" class="w-full">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Model ID</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Provider</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Context Length</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Max Completion Tokens</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pricing Prompt ($)</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pricing Completion ($)</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Avg Latency (s)</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Throughput (t/s)</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Chat View -->
+      <div id="chat-view" class="tab-content bg-white rounded-lg shadow-sm p-6">
+        <div id="model-selector" class="mb-6">
+          <div class="model-hierarchy-selector grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <select 
+              id="creator-dropdown" 
+              class="select2 w-full"
+              aria-label="Select provider"
+            >
+              <option value="">Select a provider...</option>
+            </select>
+            <select 
+              id="model-dropdown" 
+              class="select2 w-full"
+              aria-label="Select model" 
+              disabled
+            >
+              <option value="">Select a model...</option>
+            </select>
+            <select 
+              id="version-dropdown" 
+              class="select2 w-full"
+              aria-label="Select version" 
+              disabled
+            >
+              <option value="">Select a version...</option>
+            </select>
+            <select 
+              id="provider-dropdown" 
+              class="select2 w-full"
+              aria-label="Select configuration" 
+              disabled
+            >
+              <option value="">Select a configuration...</option>
+            </select>
+          </div>
+          
+          <div id="model-details" class="bg-gray-50 rounded-lg p-6 mb-6">
+            <div id="pricing-info" class="flex justify-between mb-4">
+              <span id="prompt-price" class="font-medium">Prompt Price: -</span>
+              <span id="completion-price" class="font-medium">Completion Price: -</span>
+            </div>
+            <div id="model-description" class="text-gray-600 text-sm"></div>
+          </div>
+
+          <div id="provider-filters" class="flex justify-center gap-4">
+            <button 
+              data-sort="price" 
+              aria-label="Sort by price"
+              class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+            >
+              Sort by Price
+            </button>
+            <button 
+              data-sort="latency" 
+              aria-label="Sort by latency"
+              class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+            >
+              Sort by Latency
+            </button>
+            <button 
+              data-sort="throughput" 
+              aria-label="Sort by throughput"
+              class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+            >
+              Sort by Throughput
+            </button>
+          </div>
         </div>
         
-        <div id="model-details">
-          <div id="pricing-info">
-            <span id="prompt-price">Prompt Price: -</span>
-            <span id="completion-price">Completion Price: -</span>
+        <div id="chat-container" class="border border-gray-200 rounded-lg">
+          <div 
+            id="messages" 
+            role="log" 
+            aria-live="polite"
+            class="h-96 overflow-y-auto p-6"
+          ></div>
+          <div id="input-area" class="border-t border-gray-200 p-4 bg-gray-50 rounded-b-lg">
+            <div class="flex gap-4">
+              <textarea 
+                id="prompt-input" 
+                placeholder="Enter your prompt..."
+                aria-label="Enter your prompt"
+                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-y min-h-[80px]"
+              ></textarea>
+              <button 
+                id="send-prompt" 
+                aria-label="Send prompt"
+                class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 self-end"
+              >
+                Send
+              </button>
+            </div>
           </div>
-          <div id="model-description"></div>
         </div>
-
-        <div id="provider-filters">
-          <button data-sort="price" aria-label="Sort by price">Sort by Price</button>
-          <button data-sort="latency" aria-label="Sort by latency">Sort by Latency</button>
-          <button data-sort="throughput" aria-label="Sort by throughput">Sort by Throughput</button>
+        
+        <div 
+          id="usage-stats" 
+          role="status" 
+          aria-live="polite"
+          class="flex justify-between mt-4 p-4 bg-gray-50 rounded-lg"
+        >
+          <span id="token-count" class="text-gray-600">Tokens: 0</span>
+          <span id="cost-estimate" class="text-gray-600">Est. Cost: $0.00</span>
         </div>
-      </div>
-      
-      <div id="chat-container">
-        <div id="messages" role="log" aria-live="polite"></div>
-        <div id="input-area">
-          <textarea 
-            id="prompt-input" 
-            placeholder="Enter your prompt..."
-            aria-label="Enter your prompt"
-          ></textarea>
-          <button id="send-prompt" aria-label="Send prompt">Send</button>
-        </div>
-      </div>
-      
-      <div id="usage-stats" role="status" aria-live="polite">
-        <span id="token-count">Tokens: 0</span>
-        <span id="cost-estimate">Est. Cost: $0.00</span>
       </div>
     </div>
 
