@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="text-[16px] sm:text-[18px] md:text-[20px]">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,27 +10,45 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <link rel="preconnect" href="https://openrouter.ai" />
+    <style>
+      .select2-container--classic .select2-selection--single {
+        height: auto !important;
+        padding: 0.5rem !important;
+        font-size: 1rem !important;
+      }
+      .select2-container--classic .select2-selection--single .select2-selection__rendered {
+        line-height: 1.5 !important;
+      }
+      .select2-container--classic .select2-results__option {
+        padding: 0.5rem !important;
+        font-size: 1rem !important;
+      }
+      .select2-container--classic .select2-search--dropdown .select2-search__field {
+        padding: 0.5rem !important;
+        font-size: 1rem !important;
+      }
+    </style>
   </head>
 
-  <body class="bg-gray-50 min-h-screen p-6">
+  <body class="min-h-screen p-4 md:p-6 bg-gray-50 text-base">
     <div class="max-w-7xl mx-auto">
-      <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">OpenRouter Dashboard</h1>
+      <h1 class="text-2xl md:text-4xl font-bold text-center text-gray-800 mb-8">OpenRouter Dashboard</h1>
       
       <!-- Auth Section -->
-      <form id="auth-section" class="flex justify-center gap-4 mb-8" onsubmit="return false;">
+      <form id="auth-section" class="flex flex-col sm:flex-row justify-center items-center gap-4 mb-8" onsubmit="return false;">
         <input
           type="password"
           id="api-key"
           placeholder="Enter OpenRouter API Key"
           aria-label="API key input"
           required
-          class="w-96 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          class="w-full sm:w-96 px-4 py-3 text-lg border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         />
         <button 
           id="save-key" 
           type="submit" 
           aria-label="Save API key"
-          class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          class="w-full sm:w-auto px-8 py-3 text-lg bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         >
           Save Key
         </button>
@@ -40,14 +58,14 @@
       <div id="tab-navigation" class="flex justify-center gap-4 mb-6">
         <button 
           id="stats-tab" 
-          class="tab-button active px-6 py-2 rounded-md transition-colors"
+          class="tab-button active px-8 py-3 text-lg rounded-md transition-colors"
           aria-pressed="true"
         >
           Stats
         </button>
         <button 
           id="chat-tab" 
-          class="tab-button px-6 py-2 rounded-md transition-colors"
+          class="tab-button px-8 py-3 text-lg rounded-md transition-colors"
           aria-pressed="false"
         >
           Chat
@@ -55,44 +73,46 @@
       </div>
 
       <!-- Stats View -->
-      <div id="stats-view" class="tab-content active bg-white rounded-lg shadow-sm p-6">
-        <div id="input-section" class="flex gap-4 mb-6">
+      <div id="stats-view" class="tab-content active bg-white rounded-lg shadow-sm p-4 md:p-6">
+        <div id="input-section" class="flex flex-col sm:flex-row gap-4 mb-6">
           <div class="flex-1 relative">
             <input
               type="text"
               id="model-input"
               placeholder="Search models (e.g., gpt-4, claude)"
               aria-label="Model search input"
-              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              class="w-full px-4 py-3 text-lg border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
             <ul id="suggestions" class="hidden absolute w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10"></ul>
           </div>
-          <button 
-            id="fetch-button" 
-            aria-label="Fetch stats"
-            class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-          >
-            Fetch Stats
-          </button>
-          <button 
-            id="fetch-all-button" 
-            aria-label="Fetch all stats"
-            class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-          >
-            Fetch All Stats
-          </button>
+          <div class="flex gap-4">
+            <button 
+              id="fetch-button" 
+              aria-label="Fetch stats"
+              class="flex-1 sm:flex-none px-8 py-3 text-lg bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
+              Fetch Stats
+            </button>
+            <button 
+              id="fetch-all-button" 
+              aria-label="Fetch all stats"
+              class="flex-1 sm:flex-none px-8 py-3 text-lg bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
+              Fetch All Stats
+            </button>
+          </div>
         </div>
 
         <div 
           id="error-message" 
           role="alert"
-          class="hidden p-4 mb-4 text-red-700 bg-red-100 rounded-md"
+          class="hidden p-4 mb-4 text-lg text-red-700 bg-red-100 rounded-md"
         ></div>
 
         <div 
           id="loading" 
           role="status"
-          class="hidden text-center p-4 text-gray-600"
+          class="hidden text-center p-4 text-lg text-gray-600"
         >
           Loading...
         </div>
@@ -101,14 +121,14 @@
           <table id="stats-table" class="w-full">
             <thead class="bg-gray-50">
               <tr>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Model ID</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Provider</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Context Length</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Max Completion Tokens</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pricing Prompt ($)</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pricing Completion ($)</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Avg Latency (s)</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Throughput (t/s)</th>
+                <th scope="col" class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Model ID</th>
+                <th scope="col" class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Provider</th>
+                <th scope="col" class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Context Length</th>
+                <th scope="col" class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Max Completion Tokens</th>
+                <th scope="col" class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Pricing Prompt ($)</th>
+                <th scope="col" class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Pricing Completion ($)</th>
+                <th scope="col" class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Avg Latency (s)</th>
+                <th scope="col" class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Throughput (t/s)</th>
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200"></tbody>
@@ -117,7 +137,7 @@
       </div>
 
       <!-- Chat View -->
-      <div id="chat-view" class="tab-content bg-white rounded-lg shadow-sm p-6">
+      <div id="chat-view" class="tab-content bg-white rounded-lg shadow-sm p-4 md:p-6">
         <div id="model-selector" class="mb-6">
           <div class="model-hierarchy-selector grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             <select 
@@ -154,32 +174,32 @@
           </div>
           
           <div id="model-details" class="bg-gray-50 rounded-lg p-6 mb-6">
-            <div id="pricing-info" class="flex justify-between mb-4">
-              <span id="prompt-price" class="font-medium">Prompt Price: -</span>
-              <span id="completion-price" class="font-medium">Completion Price: -</span>
+            <div id="pricing-info" class="flex flex-col sm:flex-row justify-between gap-4 mb-4">
+              <span id="prompt-price" class="text-lg font-medium">Prompt Price: -</span>
+              <span id="completion-price" class="text-lg font-medium">Completion Price: -</span>
             </div>
-            <div id="model-description" class="text-gray-600 text-sm"></div>
+            <div id="model-description" class="text-base text-gray-600"></div>
           </div>
 
-          <div id="provider-filters" class="flex justify-center gap-4">
+          <div id="provider-filters" class="flex flex-wrap justify-center gap-4">
             <button 
               data-sort="price" 
               aria-label="Sort by price"
-              class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+              class="px-6 py-3 text-lg bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
             >
               Sort by Price
             </button>
             <button 
               data-sort="latency" 
               aria-label="Sort by latency"
-              class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+              class="px-6 py-3 text-lg bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
             >
               Sort by Latency
             </button>
             <button 
               data-sort="throughput" 
               aria-label="Sort by throughput"
-              class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+              class="px-6 py-3 text-lg bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
             >
               Sort by Throughput
             </button>
@@ -194,17 +214,17 @@
             class="h-96 overflow-y-auto p-6"
           ></div>
           <div id="input-area" class="border-t border-gray-200 p-4 bg-gray-50 rounded-b-lg">
-            <div class="flex gap-4">
+            <div class="flex flex-col sm:flex-row gap-4">
               <textarea 
                 id="prompt-input" 
                 placeholder="Enter your prompt..."
                 aria-label="Enter your prompt"
-                class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-y min-h-[80px]"
+                class="flex-1 px-4 py-3 text-lg border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-y min-h-[80px]"
               ></textarea>
               <button 
                 id="send-prompt" 
                 aria-label="Send prompt"
-                class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 self-end"
+                class="px-8 py-3 text-lg bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 self-end"
               >
                 Send
               </button>
@@ -216,7 +236,7 @@
           id="usage-stats" 
           role="status" 
           aria-live="polite"
-          class="flex justify-between mt-4 p-4 bg-gray-50 rounded-lg"
+          class="flex flex-col sm:flex-row justify-between gap-4 mt-4 p-4 text-lg bg-gray-50 rounded-lg"
         >
           <span id="token-count" class="text-gray-600">Tokens: 0</span>
           <span id="cost-estimate" class="text-gray-600">Est. Cost: $0.00</span>
