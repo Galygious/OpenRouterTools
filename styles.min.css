@@ -141,13 +141,26 @@ h1 {
 
 #model-selector {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 15px;
   margin-bottom: 20px;
-  gap: 20px;
+}
+
+.model-row {
+  display: flex;
+  gap: 15px;
+  align-items: center;
 }
 
 #model-dropdown {
+  flex: 2;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+}
+
+#max-price {
   flex: 1;
   padding: 10px;
   font-size: 16px;
