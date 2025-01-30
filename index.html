@@ -140,36 +140,40 @@
       <div id="chat-view" class="tab-content hidden bg-white rounded-lg shadow-sm p-4 md:p-6">
         <div id="model-selector" class="mb-6">
           <div class="model-hierarchy-selector grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <select 
-              id="creator-dropdown" 
+            <select
+              id="creator-dropdown"
               class="select2 w-full"
-              aria-label="Select provider"
+              aria-label="Select creator"
+              data-placeholder="Select a creator..."
             >
-              <option value="">Select a provider...</option>
+              <option value=""></option>
             </select>
-            <select 
-              id="model-dropdown" 
+            <select
+              id="model-dropdown"
               class="select2 w-full"
-              aria-label="Select model" 
+              aria-label="Select model"
+              data-placeholder="Select a model..."
               disabled
             >
-              <option value="">Select a model...</option>
+              <option value=""></option>
             </select>
-            <select 
-              id="version-dropdown" 
+            <select
+              id="version-dropdown"
               class="select2 w-full"
-              aria-label="Select version" 
+              aria-label="Select version"
+              data-placeholder="Select a version..."
               disabled
             >
-              <option value="">Select a version...</option>
+              <option value=""></option>
             </select>
-            <select 
-              id="provider-dropdown" 
+            <select
+              id="provider-dropdown"
               class="select2 w-full"
-              aria-label="Select configuration" 
+              aria-label="Select provider with pricing"
+              data-placeholder="Select a provider with pricing..."
               disabled
             >
-              <option value="">Select a configuration...</option>
+              <option value=""></option>
             </select>
           </div>
           
