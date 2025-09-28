@@ -16,13 +16,39 @@ A web dashboard for exploring OpenRouter models and their performance statistics
 
 The proxy server bypasses CORS restrictions and allows the dashboard to work properly.
 
-1. **Start the proxy server:**
+#### Method A: Set API Key as Environment Variable (Recommended)
+
+1. **Set your OpenRouter API key as an environment variable:**
+   ```bash
+   # Windows (PowerShell)
+   $env:OPENROUTER_API_KEY="your_api_key_here"
+   
+   # Windows (Command Prompt)
+   set OPENROUTER_API_KEY=your_api_key_here
+   
+   # Linux/Mac
+   export OPENROUTER_API_KEY="your_api_key_here"
+   ```
+
+2. **Start the proxy server:**
    ```bash
    py -3.12 start_server.py
    ```
    Or specify a custom port:
    ```bash
    py -3.12 start_server.py 3000
+   ```
+
+3. **Open your browser and go to:**
+   ```
+   http://localhost:8080
+   ```
+
+#### Method B: Enter API Key in Browser
+
+1. **Start the proxy server:**
+   ```bash
+   py -3.12 start_server.py
    ```
 
 2. **Open your browser and go to:**
